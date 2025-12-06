@@ -1,7 +1,3 @@
-dependencies:
-  - curl
-  - ca-certificates
-
 docker_packages:
   - docker-ce
   - docker-ce-cli
