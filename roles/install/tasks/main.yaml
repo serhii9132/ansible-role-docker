@@ -1,0 +1,52 @@
+---
+- name: Apt update and upgrade
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: true
+
+- name: Install packages
+  loop: "{{ dependencies }}"
+  ansible.builtin.apt:
+    name: "{{ item }}"
+
+- name: Add the GPG key for the official Docker repo
+  ansible.builtin.apt_key:
+    url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+    state: present
+
+- name: Add the Docker repository to APT sources
+  ansible.builtin.apt_repository:
+    repo: "deb https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} stable"
+    state: present
+    filename: docker
+
+- name: Install Docker
+  loop: "{{ docker_packages }}"
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    update_cache: true
+
+- name: Copy daemon.json
+  ansible.builtin.copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: '644'
+
+- name: Ensure Docker service is enabled
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Create docker group
+  ansible.builtin.group:
+    name: "{{ docker_group }}"
+    state: present
+
+- name: Add user to docker group
+  ansible.builtin.user:
+    name: "{{ user }}"
+    group: "{{ docker_group }}"
+  when: user is not defined

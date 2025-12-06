@@ -1,0 +1,6 @@
+---
+- name: Setup Docker
+  hosts: common-host
+  gather_facts: true
+  roles:
+   - install
