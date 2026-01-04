@@ -5,12 +5,16 @@ galaxy_info:
   author: Serhii
   description: Install and configure Docker
   license: MIT
-  min_ansible_version: 2.9
+  min_ansible_version: "2.19"
   platforms:
     - name: Debian
       versions:
         - bookworm
+        - trixie
+    - name: Ubuntu
+      versions:
+        - jammy
+        - noble
   galaxy_tags:
-    - system
-    - debian
     - docker
+dependencies: []
