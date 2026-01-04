@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  role_name: docker
+  namespace: serhii9132
+  author: Serhii
+  description: Install and configure Docker
+  license: MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: Debian
+      versions:
+        - bookworm
+  galaxy_tags:
+    - system
+    - debian
+    - docker
