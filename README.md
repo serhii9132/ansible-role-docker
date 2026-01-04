@@ -24,24 +24,10 @@ This role requires Ansible 2.19 or higher
 Role Variables
 --------------
 
-<table>
-<thead>
-  <tr>
-    <th>Name</th>
-    <th>Comment</th>
-    <th>Type</th>
-    <th>Default Value</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td>user</td>
-    <td>A user to be added to the docker group</td>
-    <td>str</td>
-    <td>''</td>
-  </tr>
-</tbody>
-</table>
+```yaml
+user: ""
+```
+A user to be added to the docker group
 
 Dependencies
 ------------
@@ -53,6 +39,7 @@ Example Playbook
 
 ```yaml
 - hosts: servers
+  gather_facts: true
   roles:
     - serhii9132.docker
 ```
