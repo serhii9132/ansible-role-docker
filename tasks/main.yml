@@ -1,11 +1,9 @@
 ---
-- name: Add the GPG key
-  ansible.builtin.get_url:
-    url: "{{ gpg_key_url }}"
-    dest: "{{ gpg_key_file }}"
-    owner: root
-    group: root
-    mode: '644'
+- name: Install prerequisite packages
+  loop: "{{ dependencies }}"
+  ansible.builtin.apt:
+    update_cache: true
+    name: "{{ item }}"
 
 - name: Add the Docker repository to APT sources
   ansible.builtin.deb822_repository:
@@ -14,7 +12,7 @@
     uris: "{{ base_docker_url }}"
     suites: "{{ ansible_distribution_release | lower }}"
     components: stable
-    signed_by: "{{ gpg_key_file }}"
+    signed_by: "{{ gpg_key_url }}"
     enabled: true
 
 - name: Install Docker
