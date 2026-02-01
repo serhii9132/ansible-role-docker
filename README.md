@@ -16,7 +16,8 @@ Docker daemon options:
 
 ```json
 "max-concurrent-uploads": 1,
-"max-concurrent-downloads": 1
+"max-concurrent-downloads": 1,
+"containerd-snapshotter": false
 ```
 
 Requirements
