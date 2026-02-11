@@ -1,6 +1,6 @@
 ---
 - name: Install prerequisite packages
-  loop: "{{ dependencies }}"
+  loop: "{{ __docker_dependencies }}"
   ansible.builtin.apt:
     update_cache: true
     name: "{{ item }}"
@@ -9,14 +9,14 @@
   ansible.builtin.deb822_repository:
     name: docker
     types: ["deb"]
-    uris: "{{ base_docker_url }}"
+    uris: "{{ __docker_base_url }}"
     suites: "{{ ansible_distribution_release | lower }}"
     components: stable
-    signed_by: "{{ gpg_key_url }}"
+    signed_by: "{{ __docker_gpg_key_url }}"
     enabled: true
 
 - name: Install Docker
-  loop: "{{ docker_packages }}"
+  loop: "{{ __docker_packages }}"
   ansible.builtin.apt:
     name: "{{ item }}"
     update_cache: true
@@ -35,12 +35,13 @@
 
 - name: Create docker group
   ansible.builtin.group:
-    name: "{{ docker_group }}"
+    name: "{{ __docker_group }}"
     state: present
 
 - name: Add user to docker group
   ansible.builtin.user:
-    name: "{{ user }}"
-    groups: "{{ docker_group }}"
+    name: "{{ item }}"
+    groups: "{{ __docker_group }}"
     append: true
-  when: user is defined
+  loop: "{{ docker_list_users }}"
+  when: docker_list_users | length > 0

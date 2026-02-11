@@ -28,10 +28,24 @@ This role requires Ansible 2.19 or higher
 Role Variables
 --------------
 
-```yaml
-user: ""
-```
-A user to be added to the docker group
+<table>
+<thead>
+  <tr>
+    <th>Name</th>
+    <th>Comment</th>
+    <th>Type</th>
+    <th>Default Value</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>docker_list_users</td>
+    <td>A list of users to be added to the docker group.</td>
+    <td>list</td>
+    <td>[]</td>
+  </tr>
+</tbody>
+</table>
 
 Dependencies
 ------------

@@ -1,14 +1,14 @@
-dependencies:
+__docker_dependencies:
   - python3-debian
 
-docker_packages:
+__docker_packages:
   - docker-ce
   - docker-ce-cli
   - containerd.io
   - docker-buildx-plugin
   - docker-compose-plugin
 
-docker_group: docker
+__docker_group: docker
 
-base_docker_url: https://download.docker.com/linux/{{ ansible_distribution | lower }}
-gpg_key_url: "{{ base_docker_url }}/gpg"
+__docker_base_url: https://download.docker.com/linux/{{ ansible_distribution | lower }}
+__docker_gpg_key_url: "{{ __docker_base_url }}/gpg"
