@@ -1,9 +1,8 @@
 ---
 - name: Install prerequisite packages
-  loop: "{{ __docker_dependencies }}"
   ansible.builtin.apt:
     update_cache: true
-    name: "{{ item }}"
+    name: "{{ __docker_dependencies }}"
 
 - name: Add the Docker repository to APT sources
   ansible.builtin.deb822_repository:
@@ -16,9 +15,8 @@
     enabled: true
 
 - name: Install Docker
-  loop: "{{ __docker_packages }}"
   ansible.builtin.apt:
-    name: "{{ item }}"
+    name: "{{ __docker_packages }}"
     update_cache: true
   notify:
     - Enable Docker service
@@ -38,7 +36,7 @@
     name: "{{ __docker_group }}"
     state: present
 
-- name: Add user to docker group
+- name: Add users to docker group
   ansible.builtin.user:
     name: "{{ item }}"
     groups: "{{ __docker_group }}"
