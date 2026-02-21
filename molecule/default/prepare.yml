@@ -1,0 +1,14 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Wait for system to become reachable
+      ansible.builtin.wait_for_connection:
+        timeout: 15
+
+    - name: Create test users
+      ansible.builtin.user:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ docker_list_users }}"

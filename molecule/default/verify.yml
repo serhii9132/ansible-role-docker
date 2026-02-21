@@ -1,0 +1,45 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Get Docker version
+      ansible.builtin.command:
+        cmd: docker --version
+      register: docker_version
+      failed_when: docker_version.rc != 0
+      changed_when: false
+
+    - name: Validate version output
+      ansible.builtin.assert:
+        that:
+          - "'Docker version' in docker_version.stdout"
+          - "docker_version.stdout_lines | length > 0"
+        fail_msg: "Error"
+
+    - name: Populate service facts
+      ansible.builtin.service_facts:
+
+    - name: Check if the Docker service is running
+      ansible.builtin.assert:
+        that:
+          - "'docker.service' in ansible_facts.services"
+          - "ansible_facts.services['docker.service'].state == 'running'"
+          - "ansible_facts.services['docker.service'].status == 'enabled'"
+        fail_msg: "Service docker.service is not running or not enabled!"
+        success_msg: "Service docker.service is running and enabled properly."
+
+    - name: Check group membership for all docker users
+      ansible.builtin.command: "id -Gn {{ item }}"
+      register: user_groups
+      changed_when: false
+      loop: "{{ docker_list_users }}"
+
+    - name: Assert each user is actually in the docker group
+      ansible.builtin.assert:
+        that:
+          - "'docker' in item.stdout.split()"
+        fail_msg: "Error: Failed to add user {{ item.item }} to the docker group."
+        success_msg: "Success: User {{ item.item }} was successfully added to the docker group."
+      loop: "{{ user_groups.results }}"
+      loop_control:
+        label: "{{ item.item }}"
