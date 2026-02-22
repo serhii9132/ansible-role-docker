@@ -31,10 +31,10 @@ provisioner:
   name: ansible
   inventory:
     group_vars:
-        all:
-          docker_list_users:
-            - user1
-            - user2
+      all:
+        docker_list_users:
+          - user1
+          - user2
   env:
     ANSIBLE_VERBOSITY: 3
   lint:
