@@ -20,6 +20,4 @@ provisioner:
           - user1
           - user2
   env:
-    ANSIBLE_VERBOSITY: 3
-  lint:
-    name: "ansible-lint"
+    ANSIBLE_VERBOSITY: 2
